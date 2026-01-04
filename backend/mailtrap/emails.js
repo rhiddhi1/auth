@@ -1,4 +1,9 @@
-import { VERIFICATION_EMAIL_TEMPLATE } from "./emailTemplates.js";
+import { send } from "process";
+import {
+  PASSWORD_RESET_REQUEST_TEMPLATE,
+  VERIFICATION_EMAIL_TEMPLATE,
+  PASSWORD_RESET_SUCCESS_TEMPLATE,
+} from "./emailTemplates.js";
 import { mailtrapClient, sender } from "./mailtrap.config.js";
 
 export const sendVerificationEmail = async (email, verificationToken) => {
@@ -24,4 +29,59 @@ export const sendVerificationEmail = async (email, verificationToken) => {
   }
 };
 
-export const sendWelcomeEmail = async (email, name) => {};
+export const sendWelcomeEmail = async (email, name) => {
+  const recipient = [{ email }];
+
+  try {
+    const response = await mailtrapClient.send({
+      from: sender,
+      to: recipient,
+      template_uuid: "5aef7940-746b-4e11-ba93-20f5d8ba3ed5",
+      template_variables: {
+        name: name,
+        company_info_name: "Auth Company",
+      },
+    });
+
+    console.log("Welcome email sent successfully", response);
+  } catch (error) {
+    console.log(`Error sending welcome email`, error);
+    throw new Error(`Error sending welcome email: ${error}`);
+  }
+};
+
+export const sendPasswordResendEmail = async (email, resetURL) => {
+  const recipient = [{ email }];
+
+  try {
+    const response = await mailtrapClient.send({
+      from: sender,
+      to: recipient,
+      subject: "Reset your password",
+      html: PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", resetURL),
+      category: "Password Reset",
+    });
+  } catch (error) {
+    consol.log(`Error sending password reset email`, error);
+    throw new Error(`Error sending password reset email: ${error}`);
+  }
+};
+
+export const sendPasswordResetSuccessEmail = async (email) => {
+  const recipient = [{ email }];
+
+  try {
+    const response = await mailtrapClient.send({
+      from: sender,
+      to: recipient,
+      subject: "Password Reset Successful",
+      html: PASSWORD_RESET_SUCCESS_TEMPLATE,
+      category: "Password Reset",
+    });
+
+    console.log("Password reset email send successfully", response);
+  } catch (error) {
+    console.log(`Error sending password `);
+    throw new error(`Error sending password reset email: ${error}`);
+  }
+};
