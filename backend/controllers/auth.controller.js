@@ -1,8 +1,8 @@
 import bcryptjs from "bcryptjs";
 import crypto from "crypto";
 
-import { User } from "../../model/user.model.js";
-import { generateTokenAndSetCookie } from "../../utils/generateTokenAndSetCookie.js";
+import { User } from "../../backend/model/user.model.js";
+import { generateTokenAndSetCookie } from "../../backend/utils/generateTokenAndSetCookie.js";
 import {
   sendPasswordResendEmail,
   sendVerificationEmail,
@@ -211,7 +211,7 @@ export const checkAuth = async (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .json({ success: false, message: "User not found" }); 
+        .json({ success: false, message: "User not found" });
     }
     res.status(200).json({ success: true, user });
   } catch (error) {
