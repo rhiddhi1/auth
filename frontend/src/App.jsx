@@ -114,6 +114,14 @@ function App() {
           </RedirectAuthenticatedUser>
         }
       </Routes>
+      <Route
+        path="/reset-password/:token"
+        element={
+          <RedirectAuthenticatedUser>
+            <ResetPasswordPage />
+          </RedirectAuthenticatedUser>
+        }
+      />
     </div>
   );
 }
