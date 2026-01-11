@@ -3,6 +3,7 @@ import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import SignUpPage from "./pages/signUpPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx";
@@ -36,13 +37,14 @@ const RedirectAuthenticatedUser = ({ children }) => {
 };
 
 function App() {
-  const { isCheckingAuth, checkAuth, isAuthenticated, user } = useAuthStore();
+  const { isCheckingAuth, checkAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
   if (isCheckingAuth) return <LoadingSpinner />;
+
   return (
     <div
       className="min-h-screen bg-gradient-to-br
@@ -103,6 +105,14 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
+      </Routes>
+      <Routes>
+        path="/forgot-password" element=
+        {
+          <RedirectAuthenticatedUser>
+            <ForgotPasswordPage />
+          </RedirectAuthenticatedUser>
+        }
       </Routes>
     </div>
   );
