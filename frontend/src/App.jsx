@@ -4,6 +4,7 @@ import SignUpPage from "./pages/signUpPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
+import ResetPasswordPage from "./pages/ResetPasswordPage.jsx";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx";
@@ -81,6 +82,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/signup"
           element={
@@ -89,6 +91,7 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
+
         <Route
           path="/login"
           element={
@@ -97,6 +100,7 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
+
         <Route
           path="/verify-email"
           element={
@@ -105,23 +109,25 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
+
+        <Route
+          path="/forgot-password"
+          element={
+            <RedirectAuthenticatedUser>
+              <ForgotPasswordPage />
+            </RedirectAuthenticatedUser>
+          }
+        />
+
+        <Route
+          path="/reset-password/:token"
+          element={
+            <RedirectAuthenticatedUser>
+              <ResetPasswordPage />
+            </RedirectAuthenticatedUser>
+          }
+        />
       </Routes>
-      <Routes>
-        path="/forgot-password" element=
-        {
-          <RedirectAuthenticatedUser>
-            <ForgotPasswordPage />
-          </RedirectAuthenticatedUser>
-        }
-      </Routes>
-      <Route
-        path="/reset-password/:token"
-        element={
-          <RedirectAuthenticatedUser>
-            <ResetPasswordPage />
-          </RedirectAuthenticatedUser>
-        }
-      />
     </div>
   );
 }
