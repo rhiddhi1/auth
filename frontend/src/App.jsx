@@ -1,8 +1,10 @@
 import FloatingShape from "./components/FloatingShape.jsx";
+import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import SignUpPage from "./pages/signUpPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import DashboardPage from "./pages/DashboardPage.jsx";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx";
 import { useAuthStore } from "./store/authStore.js";
 import { useEffect } from "react";
@@ -40,8 +42,7 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("user", user);
+  if (isCheckingAuth) return <LoadingSpinner />;
   return (
     <div
       className="min-h-screen bg-gradient-to-br
@@ -72,7 +73,11 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<div className="text-white text-2xl">Home</div>}
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/signup"
@@ -90,7 +95,14 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
-        <Route path="/verify-email" element={<EmailVerificationPage />} />
+        <Route
+          path="/verify-email"
+          element={
+            <RedirectAuthenticatedUser>
+              <EmailVerificationPage />
+            </RedirectAuthenticatedUser>
+          }
+        />
       </Routes>
     </div>
   );
