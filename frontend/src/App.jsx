@@ -1,14 +1,17 @@
-import FloatingShape from "./components/FloatingShape.jsx";
-import LoadingSpinner from "./components/LoadingSpinner.jsx";
-import SignUpPage from "./pages/signUpPage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import DashboardPage from "./pages/DashboardPage.jsx";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
-import ResetPasswordPage from "./pages/ResetPasswordPage.jsx";
+import { Navigate, Route, Routes } from "react-router-dom";
+import FloatingShape from "./components/FloatingShape";
 
-import { Routes, Route, Navigate } from "react-router-dom";
-import EmailVerificationPage from "./pages/EmailVerificationPage.jsx";
-import { useAuthStore } from "./store/authStore.js";
+import SignUpPage from "./pages/SignUpPage";
+import LoginPage from "./pages/LoginPage";
+import EmailVerificationPage from "./pages/EmailVerificationPage";
+import DashboardPage from "./pages/DashboardPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+
+import LoadingSpinner from "./components/LoadingSpinner";
+
+import { Toaster } from "react-hot-toast";
+import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
 
 // protect routes that require authentication
@@ -82,7 +85,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/signup"
           element={
@@ -91,7 +93,6 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
-
         <Route
           path="/login"
           element={
@@ -100,16 +101,7 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
-
-        <Route
-          path="/verify-email"
-          element={
-            <RedirectAuthenticatedUser>
-              <EmailVerificationPage />
-            </RedirectAuthenticatedUser>
-          }
-        />
-
+        <Route path="/verify-email" element={<EmailVerificationPage />} />
         <Route
           path="/forgot-password"
           element={
@@ -127,7 +119,10 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
+        {/* catch all routes */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      <Toaster />
     </div>
   );
 }
